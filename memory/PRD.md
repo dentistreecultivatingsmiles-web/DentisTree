@@ -18,9 +18,11 @@ Mobile-first, one-page microsite for a dental clinic (Google Business Profile st
 - SEO: meta tags + Dentist JSON-LD schema in public/index.html.
 
 ## Implemented (June 2026)
-- [x] Full microsite MVP: hero, sticky mobile CTA bar, services (8 real), doctor (real), Google-style reviews (6 samples), gallery + lightbox, map + hours, WhatsApp booking modal, booking persistence
+- [x] Full microsite MVP: hero, sticky mobile CTA bar, services (8 real), doctor (real), Google-style reviews, gallery + lightbox, map + hours, WhatsApp booking modal, booking persistence
 - [x] Authentic content import from dentistree.me (logo, doctor, photos, services)
 - [x] Lightbox stacking-context bug fixed (createPortal + Escape key)
+- [x] Real Google reviews added (Hitesh Malhotra, Sachin Premi, Ganga Pun, Yashika Dogra — all 5★, extracted from user's maps.app.goo.gl share links)
+- [x] New front board photos (user-uploaded, hosted at customer-assets.emergentagent.com) placed as gallery lead tiles
 - [x] Tested: backend 13/13 pytest pass; frontend E2E flows verified
 
 ## User Personas
@@ -28,13 +30,11 @@ Mobile-first, one-page microsite for a dental clinic (Google Business Profile st
 - Existing patients needing quick contact/directions/booking
 
 ## Backlog
-- P0: Replace storefront photo with user's new front board photo (user uploading)
-- P0: Replace sample reviews with real Google reviews (user to paste)
 - P1: Protect GET /api/bookings (contains PII — name/phone/DOB); add simple admin auth
 - P1: Admin-editable content via API (Phase 4)
 - P2: Auto-sync Google reviews via Places API, multi-language, payment deposit, WhatsApp reminders
 
 ## Notes
-- Reviews are SAMPLE content until user provides real ones
+- All content is now REAL (reviews, photos, doctor, services)
 - To reseed content: drop services/doctors/reviews/gallery collections and restart backend
 - Backend tests: pytest /app/backend/tests/test_dentistree_api.py
