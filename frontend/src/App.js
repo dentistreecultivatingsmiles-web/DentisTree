@@ -1,40 +1,59 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "@/App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import axios from "axios";
-import { HOME } from "@/constants/testIds";
+import { Toaster } from "sonner";
+import Header from "@/components/site/Header";
+import Hero from "@/components/site/Hero";
+import Services from "@/components/site/Services";
+import Doctors from "@/components/site/Doctors";
+import Reviews from "@/components/site/Reviews";
+import Gallery from "@/components/site/Gallery";
+import LocationSection from "@/components/site/LocationSection";
+import Footer from "@/components/site/Footer";
+import StickyBar from "@/components/site/StickyBar";
+import BookingModal from "@/components/site/BookingModal";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+export const API = `${BACKEND_URL}/api`;
 
 const Home = () => {
-  const helloWorldApi = async () => {
-    try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
-    }
-  };
+  const [content, setContent] = useState(null);
+  const [bookingOpen, setBookingOpen] = useState(false);
 
   useEffect(() => {
-    helloWorldApi();
+    axios
+      .get(`${API}/content`)
+      .then((res) => setContent(res.data))
+      .catch((e) => console.error("Failed to load content", e));
   }, []);
 
+  if (!content) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#050505]" data-testid="loading-screen">
+        <div className="w-10 h-10 border-2 border-emerald-500 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  const { clinic, services, doctors, reviews, gallery } = content;
+  const openBooking = () => setBookingOpen(true);
+
   return (
-    <div>
-      <header className="App-header">
-        <a
-          data-testid={HOME.emergentLink}
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
+    <div className="relative bg-[#050505] text-white pb-20 md:pb-0">
+      <div className="noise-overlay" />
+      <Header clinic={clinic} onBook={openBooking} />
+      <main className="relative z-10">
+        <Hero clinic={clinic} onBook={openBooking} />
+        <Services services={services} onBook={openBooking} />
+        <Doctors doctors={doctors} />
+        <Reviews clinic={clinic} reviews={reviews} />
+        <Gallery gallery={gallery} />
+        <LocationSection clinic={clinic} />
+      </main>
+      <Footer clinic={clinic} />
+      <StickyBar clinic={clinic} onBook={openBooking} />
+      <BookingModal open={bookingOpen} onOpenChange={setBookingOpen} clinic={clinic} />
     </div>
   );
 };
@@ -42,11 +61,10 @@ const Home = () => {
 function App() {
   return (
     <div className="App">
+      <Toaster position="top-center" richColors />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
+          <Route path="/" element={<Home />} />
         </Routes>
       </BrowserRouter>
     </div>

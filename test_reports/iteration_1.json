@@ -1,0 +1,59 @@
+{
+  "summary": "First full test run for DentisTree microsite (backend + frontend). All 13 backend pytest tests pass (100% success). Frontend loads with correct branding, hero, header, all sections, sticky bar responsive behaviour, hero WhatsApp booking flow (modal -> POST /api/bookings persisted -> window.open wa.me link) all working. Sticky bar hidden on desktop and visible on mobile as expected. Real dentistree.me images all return 200. One real UI bug found: Gallery lightbox close button (data-testid=lightbox-close-btn) is not clickable because the sticky <header> intercepts pointer events over the top strip of the viewport.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "Gallery lightbox",
+        "issue": "Close button (lightbox-close-btn) at top-5 right-5 is unreachable — clicks intercepted by <header data-testid='site-header'> (sticky, z-50). Root cause: lightbox is rendered inside <main class='relative z-10'>, which creates a stacking context that caps the lightbox's z-[100] at z-10. Header sits in the outer stacking context at z-50, so it visually and pointer-event-wise sits above the lightbox in the top strip. Escape key also does not close it (no keydown handler). Backdrop click works only in areas below the header.",
+        "selector": "[data-testid='lightbox-close-btn']",
+        "priority": "HIGH"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_dentistree_api.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [
+    "Fix gallery lightbox close button — render the lightbox in a React Portal to document.body (recommended), OR move it out of <main> in App.js, OR raise the lightbox above the header by removing the wrapping stacking context.",
+    "Add Escape key handler to close the lightbox (UX polish)."
+  ],
+  "critical_code_review_comments": [
+    "Gallery.jsx lightbox has a stacking-context bug (lightbox inside <main class='relative z-10'> can't rise above sticky header at z-50 even with z-[100]). Use createPortal or lift the modal to <body>.",
+    "Gallery lightbox lacks keyboard accessibility (no Escape handler, no focus trap, no aria-modal).",
+    "BookingModal.jsx: window.open is called even when the POST /api/bookings request throws — errors are only logged, no user-visible error toast for the persistence failure. Consider showing an error before still opening WhatsApp (or blocking send if persistence fails).",
+    "server.py uses deprecated FastAPI @app.on_event('startup'/'shutdown') hooks — should migrate to lifespan context manager (works today but prints DeprecationWarning).",
+    "server.py: CLINIC dict is a module-level constant; consider moving to a config or DB so main agent can update without redeploy.",
+    "No pagination or auth on GET /api/bookings — bookings contain PII (name, phone, DOB) and are publicly readable. Add auth or restrict this endpoint before production."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_dentistree_api.py (created)"
+  ],
+  "success_rate": {
+    "backend": "100% (13/13 pytest)",
+    "frontend": "~90% (7/8 flows — lightbox close broken)"
+  },
+  "test_credentials": "N/A — public site, no auth",
+  "seed_data_creation": "Two TEST_ prefixed bookings were created during frontend E2E: 'TEST_Playwright Auto' and 'TEST_PW_Verify_2026'. Backend tests also created TEST_ bookings. These persist in the bookings collection; safe to leave or clean up.",
+  "retest_needed": true,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Backend suite is /app/backend/tests/test_dentistree_api.py (pytest with classes TestContent, TestBookings, TestRoot). Run: pytest /app/backend/tests/test_dentistree_api.py -v --junitxml=/app/test_reports/pytest/pytest_results.xml. Frontend URL: https://tooth-reserve-16.preview.emergentagent.com. After main agent fixes lightbox stacking issue, only re-run gallery lightbox test (click gallery-item-0 -> expect gallery-lightbox visible -> click lightbox-close-btn -> expect gallery-lightbox to disappear). All other flows already verified working.",
+  "rca_of_the_issue": {
+    "bug": "Gallery lightbox close button not clickable",
+    "reproduction_steps": [
+      "Open the site on desktop (1920x1080).",
+      "Scroll to Gallery section and click any gallery item (e.g. data-testid='gallery-item-0').",
+      "Lightbox opens covering the viewport.",
+      "Click the close button (data-testid='lightbox-close-btn') at top-right.",
+      "Nothing happens. Playwright reports: '<header data-testid=site-header> intercepts pointer events'. Pressing Escape also does not close it. Only clicking the backdrop in the lower portion of the screen (below the header row) closes it."
+    ],
+    "root_cause": "Gallery.jsx renders the lightbox as a sibling <div class='fixed inset-0 z-[100] ...'> inside <section id='gallery'>, which lives inside <main class='relative z-10'> in App.js. Because <main> is positioned with an explicit z-index, it creates a new stacking context; every descendant (including the lightbox with z-[100]) is capped at z:10 relative to the root. The <Header> component (sticky, z-50) sits OUTSIDE <main>, so it stacks above the entire main subtree including the lightbox. Result: the top strip of the viewport is owned by the header and eats all pointer events, making the close button unreachable.",
+    "mitigation": "Preferred fix: render the lightbox via ReactDOM.createPortal(..., document.body) so it escapes the <main> stacking context. Alternate fixes: (a) move the lightbox JSX to App.js (outside <main>) and lift `active` state up; (b) remove z-10 from <main> (may cause other layering issues); (c) hide the header when a lightbox is open. Additionally add a useEffect keydown listener for Escape and aria-modal / focus trap for accessibility."
+  }
+}
