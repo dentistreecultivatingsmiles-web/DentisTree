@@ -365,13 +365,23 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(level
 logger = logging.getLogger(__name__)
 
 
+OLD_LOGO_URLS = {
+    "https://dentistree.me/wp-content/uploads/sites/45/2025/03/Clinic_Logo-removebg-preview.png",
+    "",
+    None,
+}
+
+
 async def seed_content():
     seeds = [("services", SEED_SERVICES), ("doctors", SEED_DOCTORS), ("reviews", SEED_REVIEWS), ("gallery", SEED_GALLERY)]
     for col, data in seeds:
         if await db[col].count_documents({}) == 0:
             await db[col].insert_many([dict(item) for item in data])
-    if await db.settings.count_documents({"key": "clinic"}) == 0:
+    settings = await db.settings.find_one({"key": "clinic"})
+    if settings is None:
         await db.settings.insert_one({"key": "clinic", "data": dict(DEFAULT_CLINIC)})
+    elif settings["data"].get("logo") in OLD_LOGO_URLS:
+        await db.settings.update_one({"key": "clinic"}, {"$set": {"data.logo": DEFAULT_CLINIC["logo"]}})
 
 
 async def seed_admin():

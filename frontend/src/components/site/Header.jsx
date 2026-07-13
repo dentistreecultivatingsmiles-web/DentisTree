@@ -8,8 +8,12 @@ export default function Header({ clinic, onBook }) {
     >
       <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         <a href="#top" className="flex items-center gap-2.5" data-testid="header-logo">
-          <span className="w-10 h-10 rounded-xl overflow-hidden border border-emerald-500/30 bg-black flex items-center justify-center">
-            <img src={clinic.logo} alt="DentisTree logo" className="w-full h-full object-cover" />
+          <span className="w-11 h-11 rounded-xl overflow-hidden border border-emerald-500/30 bg-black flex items-start justify-center">
+            <img
+              src={clinic.logo}
+              alt="DentisTree logo"
+              className="w-full h-auto origin-top scale-150"
+            />
           </span>
           <span className="flex flex-col leading-none">
             <span className="font-heading font-bold text-lg tracking-tight">DentisTree</span>

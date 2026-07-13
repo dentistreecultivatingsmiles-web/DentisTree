@@ -1,0 +1,36 @@
+{
+  "summary": "Iteration 3 focused only on the logo bug fix + quick regression. All 6 review-request checks PASS. Backend: created /app/backend/tests/test_logo_migration.py (5 tests, all pass): (1) baseline GET /api/content returns new customer-assets logo URL, (2) migration overwrites OLD dentistree.me logo on backend restart, (3) migration preserves a CUSTOM logo (does NOT overwrite), (4) DB restored to new logo, (5) new logo URL is reachable (200, image/*, 1986x2000 webp). Regression: full existing suites still green — 31/31 tests pass across test_admin_api.py (17) + test_dentistree_api.py (14). Frontend: Playwright verified header-logo img src equals the new customer-assets URL and image loaded (naturalWidth=1986, naturalHeight=2000); all 6 sections (hero, services, doctors, reviews, gallery, location) render; admin login still works with admin@dentistree.me / DentisTree@2026; Clinic Info tab clinic-logo-url-input value equals the new logo URL and preview <img> is rendered with the same src. DB left with clinic.logo = new customer-assets URL as required.",
+  "backend_issues": {
+    "critical": [],
+    "minor": []
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [
+    "/app/backend/tests/test_logo_migration.py",
+    "/app/test_reports/pytest/logo_migration.xml",
+    "/app/test_reports/pytest/regression.xml"
+  ],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "server.py:368 OLD_LOGO_URLS set includes empty string and None — the elif branch at line 383 works because .get('logo') returns None or ''; safe. However, the migration only fires if the current DB value is in that exact set. If a user manually pastes back the old dentistree.me URL variant (e.g. with a trailing slash or different case), it won't be caught. Consider a stricter check or a one-shot migration flag if you expect more legacy URLs.",
+    "server.py:283 update_clinic accepts arbitrary dict (still noted from iteration 2). Not a regression, just still worth Pydantic-typing.",
+    "Header.jsx uses scale-150 origin-top to crop the icon portion of the wide logo. This works for THIS specific image (1986x2000, icon at top-left) — if the user later uploads a differently-shaped logo it will crop badly. Consider making it object-contain by default and only applying the crop for this brand asset, or split the logo into icon-only vs full-lockup files."
+  ],
+  "updated_files": [
+    "/app/backend/tests/test_logo_migration.py (created — 5 tests)"
+  ],
+  "success_rate": {
+    "backend": "100% (5/5 logo migration + 31/31 regression)",
+    "frontend": "100% (header logo + all sections + admin Clinic tab)"
+  },
+  "test_credentials": "admin@dentistree.me / DentisTree@2026 (verified working)",
+  "seed_data_creation": "During test_logo_migration.py the settings.clinic.logo was temporarily flipped to the OLD dentistree.me URL, then to https://example.com/custom-logo.png, and finally restored to the NEW customer-assets URL. Backend was restarted 3 times via supervisorctl. Final DB state confirmed via curl: clinic.logo = https://customer-assets.emergentagent.com/job_tooth-reserve-16/artifacts/ox8dbhg6_1000245879.webp. No other data was modified.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Logo bug fully verified in preview. Migration behaves correctly for both cases (overwrite old, preserve custom). If retesting: pytest /app/backend/tests/test_logo_migration.py -v (note: it restarts backend 3x via sudo supervisorctl restart backend and takes ~15s). The user is likely looking at PRODUCTION which we cannot test — a redeploy will apply the fix there because seed_content() migration runs on startup. All previous action items from iteration 2 (public GET /api/bookings PII leak, missing Pydantic models on admin endpoints, CORS_ORIGINS='*' with credentials) remain OPEN — none are logo-related so not re-flagged as critical this iteration.",
+  "rca_of_the_issue": "The user's complaint 'my logo is not used' had two root causes: (1) DEFAULT_CLINIC['logo'] was hardcoded to the old dentistree.me URL, and (2) even after that was updated, seed_content() only inserts default data when the collection is empty — since production/preview MongoDB already had a settings.clinic document, the code never picked up the new default. Fix confirmed: DEFAULT_CLINIC['logo'] now points to customer-assets URL (server.py:36), OLD_LOGO_URLS whitelist (server.py:368) includes the old URL + empty/None, and seed_content() (server.py:383-384) now performs an in-place update of settings.clinic.data.logo on every startup when the current value is in the whitelist. Verified end-to-end by planting the old URL in Mongo, restarting backend, and observing GET /api/content return the new URL. Also verified the migration does NOT clobber a custom user-provided URL."
+}
