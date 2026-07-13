@@ -1,0 +1,122 @@
+{
+  "theme": "dark",
+  "typography": {
+    "heading_font": "Outfit",
+    "body_font": "Manrope",
+    "font_strategy": "The Anti-Default Rule. Use Outfit (Geometric Sans) for high-impact, modern headings with tight tracking (`tracking-tight`). Manrope for clean, legible body text. No Inter or generic defaults.",
+    "hierarchy": {
+      "h1": "text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white",
+      "h2": "text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white",
+      "h3": "text-xl sm:text-2xl font-semibold text-zinc-100",
+      "body": "text-base text-zinc-400 leading-relaxed",
+      "small_label": "text-xs font-bold uppercase tracking-[0.2em] text-emerald-400"
+    }
+  },
+  "colors": {
+    "palette_name": "Deep Space & Vibrant Health",
+    "background": {
+      "primary": "#050505",
+      "secondary": "#0A0A0A",
+      "tertiary": "#121212"
+    },
+    "text": {
+      "primary": "#FFFFFF",
+      "secondary": "#A1A1AA",
+      "muted": "#71717A"
+    },
+    "brand": {
+      "primary": "#10B981",
+      "primary_hover": "#059669",
+      "primary_glow": "rgba(16, 185, 129, 0.4)",
+      "whatsapp": "#25D366"
+    },
+    "accents": {
+      "border": "#27272A",
+      "star_rating": "#FBBF24"
+    },
+    "rules": "Never use pure #000000 for cards, use #0A0A0A for subtle elevation. Use #10B981 (Emerald) for the primary conversion driver. Hover states must shift to a slightly lighter/more vibrant hue (#059669)."
+  },
+  "layouts": {
+    "strategy": "Mobile-First 'Bento' Single Page",
+    "spacing": "Generous Spacing Philosophy. Use py-20 to py-32 for sections to give breathing room. Mobile sections use py-12.",
+    "grid_system": "Bento Grid Protocol. High Density for features, Asymmetric Tetris for image galleries. Gap-4 to Gap-6 for tight groupings.",
+    "cards": "Google Business Profile inspired cards. Flat solid #0A0A0A backgrounds with a delicate 1px border (#27272A). Rounded corners (rounded-2xl) to feel modern but structured."
+  },
+  "components": {
+    "hero": {
+      "style": "High impact, deep background. H1 centered or left aligned with prominent WhatsApp CTA. Background can use a subtle radial gradient of the green brand color at 10% opacity for depth."
+    },
+    "sticky_bottom_bar": {
+      "style": "Mobile-only (hidden on md+). Fixed at bottom (bottom-0), z-50, backdrop-blur-xl bg-black/80, border-t border-zinc-800 p-4. Contains two buttons: 'Book on WhatsApp' (Emerald, full width or 60%) and 'Call Now' (Outline/Ghost, 40%)."
+    },
+    "services_section": {
+      "style": "Bento grid of cards. Each card represents a service (Cleaning, Whitening, Root Canal). Includes an icon, bold title, and short description."
+    },
+    "reviews_section": {
+      "style": "Google Review aesthetic adapted to dark mode. White text, #FBBF24 star icons. Use a horizontal scrolling flex container or Swiper for mobile."
+    },
+    "gallery_section": {
+      "style": "Asymmetric Tetris grid. Images have rounded corners, subtle hover scale up, and trigger a lightbox on click."
+    },
+    "whatsapp_modal": {
+      "style": "Shadcn Dialog. Dark mode form fields. Input focus ring must be the brand green (focus:ring-emerald-500). Full Name, Phone, DOB inputs."
+    },
+    "header": {
+      "style": "Crystal Glass. Sticky top-0, z-50, backdrop-blur-xl bg-black/60, border-b border-white/10. Must NOT be fully transparent over content."
+    }
+  },
+  "motion": {
+    "general": "Subtle and premium. Scroll-triggered entrance animations using Framer Motion (`y: 20, opacity: 0` to `y: 0, opacity: 1` over 0.5s).",
+    "hover_states": "Cards lift slightly (`-translate-y-1`) with a soft glow shadow (`shadow-[0_4px_20px_rgba(16,185,129,0.1)]`). Images scale slightly (`scale-105`) inside hidden overflow containers."
+  },
+  "visual_enhancers": {
+    "textures": "Use a very subtle SVG noise texture overlay fixed over the page background to eliminate digital flatness.",
+    "icons": "Use `lucide-react`. Ensure stroke-width is consistent (1.5 or 2)."
+  },
+  "image_urls": {
+    "hero_background_or_accent": {
+      "url": "https://images.pexels.com/photos/9062527/pexels-photo-9062527.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "Clean, sterile modern dental clinic room. Use with a heavy dark gradient overlay (bg-gradient-to-r from-black via-black/80 to-transparent) so text is readable."
+    },
+    "doctor_portrait": {
+      "url": "https://images.pexels.com/photos/17792882/pexels-photo-17792882.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "Confident male dentist in uniform. Used in the Team/Doctor Intro section."
+    },
+    "gallery_1": {
+      "url": "https://images.unsplash.com/photo-1677026010083-78ec7f1b84ed?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1ODB8MHwxfHNlYXJjaHwyfHxoYXBweSUyMHBhdGllbnQlMjBiZWF1dGlmdWwlMjBzbWlsZXxlbnwwfHx8fDE3ODM5MzM3NDh8MA&ixlib=rb-4.1.0&q=85",
+      "description": "Close up of a beautiful smile, perfect for whitening/results gallery."
+    },
+    "gallery_2": {
+      "url": "https://images.unsplash.com/photo-1508002366005-75a695ee2d17?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDk1ODB8MHwxfHNlYXJjaHwzfHxoYXBweSUyMHBhdGllbnQlMjBiZWF1dGlmdWwlMjBzbWlsZXxlbnwwfHx8fDE3ODM5MzM3NDh8MA&ixlib=rb-4.1.0&q=85",
+      "description": "Happy patient smiling over shoulder."
+    },
+    "gallery_3": {
+      "url": "https://images.pexels.com/photos/31786500/pexels-photo-31786500.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+      "description": "Macro shot of dental tools for the gallery/services."
+    }
+  },
+  "3d_libraries": {
+    "recommendation": "Not heavily required for this fast-loading microsite. Stick to 2D high-quality assets and Framer Motion for premium feel."
+  },
+  "accessibility": {
+    "contrast": "Ensure all text passes APCA/WCAG AA guidelines against the dark background. Green CTA text should be white or very dark #050505 for maximum contrast.",
+    "focus": "All interactive elements must have `focus:ring-2 focus:ring-emerald-500 focus:outline-none`.",
+    "testing": "All interactive and key informational elements MUST include a `data-testid` attribute (e.g., `data-testid=\"whatsapp-booking-btn\"`)."
+  },
+  "instructions_to_main_agent": [
+    "Install Google Fonts 'Outfit' and 'Manrope' via standard CSS import.",
+    "Use standard HTML/Tailwind for the layout sections to ensure custom spacing and overlaps are achieved easily. Avoid rigid container components if they restrict full-bleed backgrounds.",
+    "Use Shadcn UI for the Dialog (Booking Modal).",
+    "Implement the mobile sticky CTA bar so it only appears on screens smaller than `md`.",
+    "Format the Services and Reviews like Google Business Profile cards: clean, bordered, flat dark backgrounds.",
+    "Ensure 'Book on WhatsApp' deep link is formatted as `https://wa.me/[phone_number]?text=[prefilled_message_url_encoded]`.",
+    "Add 'data-testid' to all buttons, input fields, and major section wrappers."
+  ],
+  "UNIVERSAL_GUIDELINES_FOR_MAIN_AGENT": [
+    "Do not center-align paragraphs. Use left-alignment for body text.",
+    "Add transition utilities to specific properties (e.g., `transition-colors`, `transition-transform`) rather than `transition-all`.",
+    "Create depth through z-index, borders, and shadows instead of flat elements.",
+    "Ensure the hero background is deeply overlaid so the text doesn't clash with the image.",
+    "Do not use transparent headers without backdrop-blur."
+  ]
+}
