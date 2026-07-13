@@ -1,0 +1,40 @@
+# DentisTree Microsite — PRD
+
+## Original Problem Statement
+Mobile-first, one-page microsite for a dental clinic (Google Business Profile style) that drives bookings via WhatsApp. React + FastAPI + MongoDB. Black/green theme, GBP-style card sections, sticky mobile CTAs, WhatsApp booking modal (Name, Phone, DOB) via wa.me deep link, bookings saved to DB.
+
+## Clinic Details (real)
+- Name: DentisTree · Tagline: "Cultivating Smiles"
+- Address: LIG Flat No. JA/1A, Ground Floor, Hari Nagar, Hari Enclave, New Delhi 110064 (Near Swarg Ashram Mandir)
+- Phone/WhatsApp: +91 8383935992 · Email: dentistree.cultivatingsmiles@gmail.com
+- Hours: Mon–Sat 10 AM–8 PM, Sun closed
+- Google rating: 4.9 (69 reviews)
+- Real assets imported from dentistree.me: logo, Dr. Manmohan Bhutani photo/bio, 5 real clinic photos, real service list
+
+## Architecture
+- Backend: FastAPI (`/app/backend/server.py`) — GET /api/content (clinic+services+doctors+reviews+gallery), POST /api/bookings, GET /api/bookings. Seed data on startup (idempotent, seeds only if collections empty).
+- Frontend: React SPA (`/app/frontend/src/App.js` + `components/site/*`): Header, Hero, Services, Doctors, Reviews, Gallery (portal lightbox), LocationSection (Google Maps embed), Footer, StickyBar (mobile), BookingModal.
+- WhatsApp: wa.me/918383935992 with URL-encoded pre-filled message; booking saved to Mongo first.
+- SEO: meta tags + Dentist JSON-LD schema in public/index.html.
+
+## Implemented (June 2026)
+- [x] Full microsite MVP: hero, sticky mobile CTA bar, services (8 real), doctor (real), Google-style reviews (6 samples), gallery + lightbox, map + hours, WhatsApp booking modal, booking persistence
+- [x] Authentic content import from dentistree.me (logo, doctor, photos, services)
+- [x] Lightbox stacking-context bug fixed (createPortal + Escape key)
+- [x] Tested: backend 13/13 pytest pass; frontend E2E flows verified
+
+## User Personas
+- Local patients finding the clinic via Google search (mobile-first)
+- Existing patients needing quick contact/directions/booking
+
+## Backlog
+- P0: Replace storefront photo with user's new front board photo (user uploading)
+- P0: Replace sample reviews with real Google reviews (user to paste)
+- P1: Protect GET /api/bookings (contains PII — name/phone/DOB); add simple admin auth
+- P1: Admin-editable content via API (Phase 4)
+- P2: Auto-sync Google reviews via Places API, multi-language, payment deposit, WhatsApp reminders
+
+## Notes
+- Reviews are SAMPLE content until user provides real ones
+- To reseed content: drop services/doctors/reviews/gallery collections and restart backend
+- Backend tests: pytest /app/backend/tests/test_dentistree_api.py

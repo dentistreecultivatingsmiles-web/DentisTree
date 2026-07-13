@@ -1,9 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
 import { X } from "lucide-react";
 
 export default function Gallery({ gallery }) {
   const [active, setActive] = useState(null);
+
+  useEffect(() => {
+    if (!active) return;
+    const onKey = (e) => e.key === "Escape" && setActive(null);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [active]);
 
   return (
     <section id="gallery" data-testid="gallery-section" className="py-16 sm:py-24 bg-[#0A0A0A] border-y border-zinc-900">
@@ -40,25 +48,29 @@ export default function Gallery({ gallery }) {
         </div>
       </div>
 
-      {active && (
-        <div
-          data-testid="gallery-lightbox"
-          className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4"
-          onClick={() => setActive(null)}
-        >
-          <button
-            data-testid="lightbox-close-btn"
-            className="absolute top-5 right-5 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+      {active &&
+        createPortal(
+          <div
+            data-testid="gallery-lightbox"
+            role="dialog"
+            aria-modal="true"
+            className="fixed inset-0 z-[100] bg-black/90 backdrop-blur-sm flex items-center justify-center p-4"
             onClick={() => setActive(null)}
           >
-            <X className="w-5 h-5 text-white" />
-          </button>
-          <figure className="max-w-4xl w-full" onClick={(e) => e.stopPropagation()}>
-            <img src={active.url} alt={active.caption} className="w-full max-h-[80vh] object-contain rounded-2xl" />
-            <figcaption className="text-center text-sm text-zinc-400 mt-3">{active.caption}</figcaption>
-          </figure>
-        </div>
-      )}
+            <button
+              data-testid="lightbox-close-btn"
+              className="absolute top-5 right-5 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors"
+              onClick={() => setActive(null)}
+            >
+              <X className="w-5 h-5 text-white" />
+            </button>
+            <figure className="max-w-4xl w-full" onClick={(e) => e.stopPropagation()}>
+              <img src={active.url} alt={active.caption} className="w-full max-h-[80vh] object-contain rounded-2xl" />
+              <figcaption className="text-center text-sm text-zinc-400 mt-3">{active.caption}</figcaption>
+            </figure>
+          </div>,
+          document.body
+        )}
     </section>
   );
 }
