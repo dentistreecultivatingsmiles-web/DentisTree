@@ -30,8 +30,8 @@ export default function Hero({ clinic, onBook }) {
             </span>
           </h1>
           <p className="mt-6 text-base sm:text-lg text-zinc-300 leading-relaxed max-w-xl">
-            Where your smile blossoms with care & precision — a premier multispecialty dental
-            clinic offering implants, Invisalign, root canals and smile designing under one roof.
+            {clinic.hero_text ||
+              "Where your smile blossoms with care & precision — a premier multispecialty dental clinic offering implants, Invisalign, root canals and smile designing under one roof."}
           </p>
 
           <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-zinc-300">

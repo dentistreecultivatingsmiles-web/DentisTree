@@ -13,6 +13,7 @@ import LocationSection from "@/components/site/LocationSection";
 import Footer from "@/components/site/Footer";
 import StickyBar from "@/components/site/StickyBar";
 import BookingModal from "@/components/site/BookingModal";
+import Admin from "@/pages/Admin";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 export const API = `${BACKEND_URL}/api`;
@@ -65,6 +66,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/admin" element={<Admin />} />
         </Routes>
       </BrowserRouter>
     </div>

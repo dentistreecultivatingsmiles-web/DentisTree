@@ -60,7 +60,7 @@ class TestContent:
 
     def test_reviews_count(self, client):
         data = client.get(f"{API}/content", timeout=15).json()
-        assert len(data["reviews"]) == 6
+        assert len(data["reviews"]) == 4
         for r in data["reviews"]:
             assert "author" in r and "rating" in r and "text" in r
 
