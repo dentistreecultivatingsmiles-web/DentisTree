@@ -351,12 +351,6 @@ async def create_booking(payload: BookingCreate):
     return booking
 
 
-@api_router.get("/bookings", response_model=List[Booking])
-async def list_bookings():
-    docs = await db.bookings.find({}, {"_id": 0}).sort("created_at", -1).to_list(500)
-    return docs
-
-
 app.include_router(api_router)
 
 app.add_middleware(

@@ -23,6 +23,8 @@ Mobile-first, one-page microsite for a dental clinic (Google Business Profile st
 - [x] Lightbox stacking-context bug fixed (createPortal + Escape key)
 - [x] Real Google reviews added (Hitesh Malhotra, Sachin Premi, Ganga Pun, Yashika Dogra — all 5★, extracted from user's maps.app.goo.gl share links)
 - [x] New front board photos (user-uploaded, hosted at customer-assets.emergentagent.com) placed as gallery lead tiles
+- [x] Admin panel at /admin: JWT cookie auth (admin@dentistree.me, creds in backend/.env + test_credentials.md), edit clinic info/logo/hours/hero text, full CRUD for services/doctors/reviews/gallery, image uploads to Emergent object storage (POST /api/admin/upload, served at /api/files/{path}), bookings viewer. Public GET /api/bookings removed (PII protected).
+- [x] Tested: iteration_2 — 17/17 admin pytest + 13/13 legacy + full admin UI E2E pass
 - [x] Tested: backend 13/13 pytest pass; frontend E2E flows verified
 
 ## User Personas
@@ -30,8 +32,7 @@ Mobile-first, one-page microsite for a dental clinic (Google Business Profile st
 - Existing patients needing quick contact/directions/booking
 
 ## Backlog
-- P1: Protect GET /api/bookings (contains PII — name/phone/DOB); add simple admin auth
-- P1: Admin-editable content via API (Phase 4)
+- P1: Admin payload validation (Pydantic models per collection), secure=True cookies for production
 - P2: Auto-sync Google reviews via Places API, multi-language, payment deposit, WhatsApp reminders
 
 ## Notes
