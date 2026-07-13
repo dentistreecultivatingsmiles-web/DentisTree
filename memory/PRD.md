@@ -25,6 +25,8 @@ Mobile-first, one-page microsite for a dental clinic (Google Business Profile st
 - [x] New front board photos (user-uploaded, hosted at customer-assets.emergentagent.com) placed as gallery lead tiles
 - [x] Admin panel at /admin: JWT cookie auth (admin@dentistree.me, creds in backend/.env + test_credentials.md), edit clinic info/logo/hours/hero text, full CRUD for services/doctors/reviews/gallery, image uploads to Emergent object storage (POST /api/admin/upload, served at /api/files/{path}), bookings viewer. Public GET /api/bookings removed (PII protected).
 - [x] Tested: iteration_2 — 17/17 admin pytest + 13/13 legacy + full admin UI E2E pass
+- [x] Code review fixes: test creds from .env, seed_data split into seed_content/seed_admin, EntityTab refactored (ItemRow/FieldEditor subcomponents), motion presets extracted to motionPresets.js, console statements replaced with toasts, stale bookings tests updated (31/31 pass)
+- [x] New official logo (user-uploaded webp, customer-assets URL) set in DB + DEFAULT_CLINIC + header restyled
 - [x] Tested: backend 13/13 pytest pass; frontend E2E flows verified
 
 ## User Personas

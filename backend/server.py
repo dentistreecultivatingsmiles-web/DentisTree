@@ -33,7 +33,7 @@ DEFAULT_CLINIC = {
     "phone_display": "083839 35992",
     "whatsapp": "918383935992",
     "email": "dentistree.cultivatingsmiles@gmail.com",
-    "logo": "https://dentistree.me/wp-content/uploads/sites/45/2025/03/Clinic_Logo-removebg-preview.png",
+    "logo": "https://customer-assets.emergentagent.com/job_tooth-reserve-16/artifacts/ox8dbhg6_1000245879.webp",
     "rating": 4.9,
     "review_count": 69,
     "hours": [
@@ -365,19 +365,16 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(level
 logger = logging.getLogger(__name__)
 
 
-@app.on_event("startup")
-async def seed_data():
-    if await db.services.count_documents({}) == 0:
-        await db.services.insert_many([dict(s) for s in SEED_SERVICES])
-    if await db.doctors.count_documents({}) == 0:
-        await db.doctors.insert_many([dict(d) for d in SEED_DOCTORS])
-    if await db.reviews.count_documents({}) == 0:
-        await db.reviews.insert_many([dict(r) for r in SEED_REVIEWS])
-    if await db.gallery.count_documents({}) == 0:
-        await db.gallery.insert_many([dict(g) for g in SEED_GALLERY])
+async def seed_content():
+    seeds = [("services", SEED_SERVICES), ("doctors", SEED_DOCTORS), ("reviews", SEED_REVIEWS), ("gallery", SEED_GALLERY)]
+    for col, data in seeds:
+        if await db[col].count_documents({}) == 0:
+            await db[col].insert_many([dict(item) for item in data])
     if await db.settings.count_documents({"key": "clinic"}) == 0:
         await db.settings.insert_one({"key": "clinic", "data": dict(DEFAULT_CLINIC)})
 
+
+async def seed_admin():
     admin_email = os.environ["ADMIN_EMAIL"].lower()
     admin_password = os.environ["ADMIN_PASSWORD"]
     existing = await db.users.find_one({"email": admin_email})
@@ -385,10 +382,14 @@ async def seed_data():
         await db.users.insert_one({"id": str(uuid.uuid4()), "email": admin_email, "password_hash": hash_password(admin_password), "name": "Admin", "role": "admin", "created_at": datetime.now(timezone.utc).isoformat()})
     elif not verify_password(admin_password, existing["password_hash"]):
         await db.users.update_one({"email": admin_email}, {"$set": {"password_hash": hash_password(admin_password)}})
-
     await db.users.create_index("email", unique=True)
     await db.login_attempts.create_index("identifier")
 
+
+@app.on_event("startup")
+async def on_startup():
+    await seed_content()
+    await seed_admin()
     try:
         init_storage()
         logger.info("Object storage initialized")

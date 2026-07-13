@@ -79,6 +79,18 @@ class TestContent:
 
 # ---- /api/bookings ----
 class TestBookings:
+    @staticmethod
+    def _admin_session():
+        import os
+        from dotenv import load_dotenv
+        load_dotenv("/app/backend/.env")
+        s = requests.Session()
+        r = s.post(f"{API}/auth/login",
+                   json={"email": os.environ["ADMIN_EMAIL"], "password": os.environ["ADMIN_PASSWORD"]},
+                   timeout=15)
+        assert r.status_code == 200, f"admin login failed: {r.text}"
+        return s
+
     def test_create_booking_and_list_persistence(self, client):
         payload = {
             "full_name": "TEST_Playwright User",
@@ -94,14 +106,21 @@ class TestBookings:
         assert body["phone"] == payload["phone"]
         assert body["dob"] == payload["dob"]
 
-        # GET list — verify persisted
-        lr = client.get(f"{API}/bookings", timeout=15)
+        # persisted list is admin-only now
+        admin = self._admin_session()
+        lr = admin.get(f"{API}/admin/bookings", timeout=15)
         assert lr.status_code == 200
         listing = lr.json()
         assert any(b["id"] == body["id"] for b in listing), "created booking not found in list"
 
-    def test_bookings_no_mongo_id(self, client):
+    def test_public_bookings_list_removed(self, client):
+        # PII protection: public GET /api/bookings must not exist
         r = client.get(f"{API}/bookings", timeout=15)
+        assert r.status_code in (401, 404, 405)
+
+    def test_admin_bookings_no_mongo_id(self, client):
+        admin = self._admin_session()
+        r = admin.get(f"{API}/admin/bookings", timeout=15)
         assert r.status_code == 200
         for b in r.json():
             assert "_id" not in b

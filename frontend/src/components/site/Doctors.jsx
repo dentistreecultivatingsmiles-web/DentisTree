@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { FADE_UP, FADE_UP_VISIBLE, VIEWPORT_ONCE } from "@/components/site/motionPresets";
 import { GraduationCap } from "lucide-react";
 
 export default function Doctors({ doctors }) {
@@ -15,9 +16,9 @@ export default function Doctors({ doctors }) {
             <motion.div
               key={d.id}
               data-testid={`doctor-card-${i}`}
-              initial={{ y: 20, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true, margin: "-40px" }}
+              initial={FADE_UP}
+              whileInView={FADE_UP_VISIBLE}
+              viewport={VIEWPORT_ONCE}
               transition={{ duration: 0.5, delay: i * 0.1 }}
               className="flex flex-col sm:flex-row gap-5 rounded-2xl bg-[#121212] border border-zinc-800 p-5 hover:border-emerald-500/30 transition-colors"
             >

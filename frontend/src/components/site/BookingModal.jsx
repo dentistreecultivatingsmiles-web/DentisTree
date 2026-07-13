@@ -26,7 +26,7 @@ export default function BookingModal({ open, onOpenChange, clinic }) {
     try {
       await axios.post(`${API}/bookings`, form);
     } catch (err) {
-      console.error("Booking save failed", err);
+      toast.warning("Couldn't save your details on our side, but WhatsApp will still open.");
     }
     const dobFormatted = new Date(form.dob).toLocaleDateString("en-GB", {
       day: "numeric", month: "long", year: "numeric",

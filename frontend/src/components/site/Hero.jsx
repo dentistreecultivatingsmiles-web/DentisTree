@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { FADE_UP, FADE_UP_VISIBLE } from "@/components/site/motionPresets";
 import { Star, MapPin, Clock, Phone, MessageCircle } from "lucide-react";
 
 const HERO_IMG =
@@ -15,8 +16,8 @@ export default function Hero({ clinic, onBook }) {
 
       <div className="relative max-w-6xl mx-auto px-4 sm:px-6 py-24 sm:py-32 lg:py-40">
         <motion.div
-          initial={{ y: 24, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
+          initial={FADE_UP}
+          animate={FADE_UP_VISIBLE}
           transition={{ duration: 0.6 }}
           className="max-w-2xl"
         >

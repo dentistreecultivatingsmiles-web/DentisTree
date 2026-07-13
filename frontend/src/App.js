@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "@/App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import axios from "axios";
-import { Toaster } from "sonner";
+import { Toaster, toast } from "sonner";
 import Header from "@/components/site/Header";
 import Hero from "@/components/site/Hero";
 import Services from "@/components/site/Services";
@@ -26,7 +26,7 @@ const Home = () => {
     axios
       .get(`${API}/content`)
       .then((res) => setContent(res.data))
-      .catch((e) => console.error("Failed to load content", e));
+      .catch(() => toast.error("Could not load clinic content. Please refresh."));
   }, []);
 
   if (!content) {

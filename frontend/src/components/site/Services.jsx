@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { FADE_UP, FADE_UP_VISIBLE, VIEWPORT_ONCE } from "@/components/site/motionPresets";
 import {
   Sparkles, Sun, Activity, AlignCenterVertical, Anchor, Smile, Baby, ShieldPlus,
 } from "lucide-react";
@@ -24,9 +25,9 @@ export default function Services({ services, onBook }) {
               <motion.div
                 key={s.id}
                 data-testid={`service-card-${i}`}
-                initial={{ y: 20, opacity: 0 }}
-                whileInView={{ y: 0, opacity: 1 }}
-                viewport={{ once: true, margin: "-40px" }}
+                initial={FADE_UP}
+                whileInView={FADE_UP_VISIBLE}
+                viewport={VIEWPORT_ONCE}
                 transition={{ duration: 0.45, delay: (i % 4) * 0.07 }}
                 className="group rounded-2xl bg-[#0A0A0A] border border-zinc-800 p-6 hover:border-emerald-500/40 hover:-translate-y-1 transition-transform duration-300"
               >

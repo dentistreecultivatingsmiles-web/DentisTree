@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { FADE_UP, FADE_UP_VISIBLE } from "@/components/site/motionPresets";
 import { MapPin, Clock, Navigation, Phone } from "lucide-react";
 
 export default function LocationSection({ clinic }) {
@@ -14,8 +15,8 @@ export default function LocationSection({ clinic }) {
 
         <div className="mt-10 grid grid-cols-1 lg:grid-cols-5 gap-6">
           <motion.div
-            initial={{ y: 20, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
+            initial={FADE_UP}
+            whileInView={FADE_UP_VISIBLE}
             viewport={{ once: true }}
             transition={{ duration: 0.5 }}
             className="lg:col-span-3 rounded-2xl overflow-hidden border border-zinc-800 min-h-[320px]"

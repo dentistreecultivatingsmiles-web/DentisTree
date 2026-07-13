@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { FADE_UP, FADE_UP_VISIBLE, VIEWPORT_ONCE } from "@/components/site/motionPresets";
 import { Star } from "lucide-react";
 
 const AVATAR_COLORS = ["bg-rose-600", "bg-sky-600", "bg-amber-600", "bg-violet-600", "bg-teal-600", "bg-orange-600"];
@@ -36,9 +37,9 @@ export default function Reviews({ clinic, reviews }) {
             <motion.div
               key={r.id}
               data-testid={`review-card-${i}`}
-              initial={{ y: 20, opacity: 0 }}
-              whileInView={{ y: 0, opacity: 1 }}
-              viewport={{ once: true, margin: "-40px" }}
+              initial={FADE_UP}
+              whileInView={FADE_UP_VISIBLE}
+              viewport={VIEWPORT_ONCE}
               transition={{ duration: 0.45, delay: (i % 3) * 0.08 }}
               className="min-w-[85%] sm:min-w-[45%] md:min-w-0 rounded-2xl bg-[#0A0A0A] border border-zinc-800 p-6"
             >

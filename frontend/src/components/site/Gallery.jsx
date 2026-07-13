@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion } from "framer-motion";
+import { SCALE_IN, SCALE_IN_VISIBLE, VIEWPORT_ONCE } from "@/components/site/motionPresets";
 import { X } from "lucide-react";
 
 export default function Gallery({ gallery }) {
@@ -27,9 +28,9 @@ export default function Gallery({ gallery }) {
               key={g.id}
               data-testid={`gallery-item-${i}`}
               onClick={() => setActive(g)}
-              initial={{ opacity: 0, scale: 0.97 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true, margin: "-40px" }}
+              initial={SCALE_IN}
+              whileInView={SCALE_IN_VISIBLE}
+              viewport={VIEWPORT_ONCE}
               transition={{ duration: 0.4, delay: (i % 4) * 0.06 }}
               className={`relative overflow-hidden rounded-2xl group focus:ring-2 focus:ring-emerald-500 focus:outline-none ${
                 i === 0 || i === 3 ? "col-span-2 row-span-2" : ""
