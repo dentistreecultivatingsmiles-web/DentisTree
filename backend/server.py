@@ -77,6 +77,9 @@ SEED_REVIEWS = [
     {"id": str(uuid.uuid4()), "author": "Sachin Premi", "rating": 5, "time_ago": "a week ago", "text": "Very cool, accommodative Doctor. Sensible and precise hearing. Painless, fast, transparent treatment.", "order": 2},
     {"id": str(uuid.uuid4()), "author": "Ganga Pun", "rating": 5, "time_ago": "2 weeks ago", "text": "Got extraction of my 11 year son from here. Painless experience. Educated and well informed doctor. Must visit.", "order": 3},
     {"id": str(uuid.uuid4()), "author": "Yashika Dogra", "rating": 5, "time_ago": "2 weeks ago", "text": "Best Dental clinic in Hari Nagar and painless experience...", "order": 4},
+    {"id": str(uuid.uuid4()), "author": "Rojina Khatiwada", "rating": 5, "time_ago": "7 months ago", "text": "Nice service, caring doctor and staff, neat and clean environment.", "order": 5},
+    {"id": str(uuid.uuid4()), "author": "Arthur Kokkinos", "rating": 5, "time_ago": "3 years ago", "text": "I had the best experience at this clinic. Dr Bhutani was amazing. His experience and professionalism was out of this world. He fixed my tooth and did my root canal stopping all the pain. I 100% recommend this clinic to all holiday travelers for the services and prices.", "order": 6},
+    {"id": str(uuid.uuid4()), "author": "Suraj Neupane", "rating": 5, "time_ago": "4 years ago", "text": "Dr. Bhutani provide very best treatment & near to home location. Professional, clinic is clean as expected. Best treatment and consultation.", "order": 7},
 ]
 
 SEED_GALLERY = [
