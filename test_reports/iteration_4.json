@@ -1,0 +1,33 @@
+{
+  "summary": "Verified white-base logo bug fix on preview. Header logo and admin ImageField preview both use bg-black (computed rgb(0, 0, 0)) with the customer-provided logo URL. No white base anywhere behind logo images. Only remaining bg-white in codebase is Gallery close button (bg-white/10 translucent, acceptable).",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Booking modal", "issues": ["Date of Birth field uses the browser default date picker (mm/dd/yyyy) instead of a styled shadcn Calendar/Popover — inconsistent with dark theme"]}
+    ]
+  },
+  "test_report_links": [
+    "/app/test_reports/header_logo.png",
+    "/app/test_reports/homepage_full.png",
+    "/app/test_reports/admin_clinic.png"
+  ],
+  "action_items": [
+    "Redeploy to production so the fixed build reaches end user (dev/preview verified correct).",
+    "(Optional) Replace browser-native <input type=date> in booking modal with shadcn Calendar/Popover to match dark theme."
+  ],
+  "critical_code_review_comments": [
+    "Header.jsx logo wrapper correctly uses bg-black with overflow-hidden + scale-150 origin-top to crop the tall 1986x2000 asset to the icon area — verified visually.",
+    "ImageField.jsx preview img correctly uses bg-black class; computed style confirms rgb(0,0,0).",
+    "No stray bg-white found behind any logo image; only Gallery close button uses bg-white/10 (translucent overlay, expected)."
+  ],
+  "updated_files": [],
+  "success_rate": { "backend": "100%", "frontend": "100%" },
+  "test_credentials": "admin@dentistree.me / DentisTree@2026 (login succeeded)",
+  "seed_data_creation": "None",
+  "retest_needed": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Iteration 4 confirmed white-base logo bug is fixed on the preview environment. GET /api/content returns clinic.logo = customer-assets URL. Header (data-testid=header-logo) inner span computed bg = rgb(0,0,0) with class bg-black; img.src exact match. Admin Clinic Info tab preview img[alt=preview] computed bg = rgb(0,0,0) with class bg-black; src matches. Booking modal opens correctly via header-book-btn. User was seeing PRODUCTION (old build) — redeploy is expected to resolve.",
+  "rca of the issue": "Root cause: an older DB record + old header/admin styling used bg-white behind the logo image (which historically was the transparent dentistree.me tooth logo). Fixes applied in earlier iterations: (a) DEFAULT_CLINIC.logo set to the new customer-assets URL, (b) startup migration replaces OLD_LOGO_URLS in existing DB documents, (c) Header.jsx wrapping span switched to bg-black with scale-150 origin-top to crop the tall webp asset to the icon area, (d) ImageField.jsx preview thumbnail changed from bg-white to bg-black. Verification on preview environment shows all three surfaces (public header, admin preview, API payload) are correct. User-visible white base likely comes from stale production build — redeploy required."
+}

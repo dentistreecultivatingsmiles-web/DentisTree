@@ -28,7 +28,7 @@ export const ImageField = ({ value, onChange, testId }) => {
   return (
     <div className="flex items-center gap-3">
       {value ? (
-        <img src={resolveImg(value)} alt="preview" className="w-14 h-14 rounded-lg object-cover border border-zinc-800 bg-white" />
+        <img src={resolveImg(value)} alt="preview" className="w-14 h-14 rounded-lg object-cover border border-zinc-800 bg-black" />
       ) : (
         <div className="w-14 h-14 rounded-lg border border-dashed border-zinc-700 flex items-center justify-center text-zinc-600 text-xs">none</div>
       )}
