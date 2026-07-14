@@ -34,6 +34,8 @@ Mobile-first, one-page microsite for a dental clinic (Google Business Profile st
 ## User Personas
 - Local patients finding the clinic via Google search (mobile-first)
 - Existing patients needing quick contact/directions/booking
+- [x] Favicon/branding: tooth-tree icon cropped from user's logo → favicon.ico, logo192/512.png, apple-touch-icon; index.html links added
+- [x] Deployment readiness check: PASS (deployment_agent, no blockers)
 
 ## Backlog
 - P1: Admin payload validation (Pydantic models per collection), secure=True cookies for production
