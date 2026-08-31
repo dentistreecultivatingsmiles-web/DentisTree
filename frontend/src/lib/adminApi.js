@@ -1,7 +1,6 @@
 import axios from "axios";
 
-export const API = (process.env.REACT_APP_BACKEND_URL || "https://dentistree.onrender.com") + "/api";
-
+export const API = ((process.env.REACT_APP_BACKEND_URL && process.env.REACT_APP_BACKEND_URL !== "undefined") ? process.env.REACT_APP_BACKEND_URL : "https://dentistree.onrender.com") + "/api";
 export const api = axios.create({ baseURL: API, withCredentials: true });
 
 export function formatApiErrorDetail(detail) {
