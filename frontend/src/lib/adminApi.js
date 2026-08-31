@@ -14,5 +14,8 @@ export function formatApiErrorDetail(detail) {
 }
 
 export function resolveImg(url) {
-  if (url && url.startsWith("/api/")) return (process.env.REACT_APP_BACKEND_URL || "https://dentistree.onrender.com") + url;
+  if (url && url.startsWith("/api/")) {
+    return (process.env.REACT_APP_BACKEND_URL || "https://dentistree.onrender.com") + url;
+  }
+  return url;
 }
