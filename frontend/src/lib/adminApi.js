@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const API = `${process.env.REACT_APP_BACKEND_URL || "https://dentistree.onrender.com"}/api`;
+export const API = (process.env.REACT_APP_BACKEND_URL || "https://dentistree.onrender.com") + "/api";
 
 export const api = axios.create({ baseURL: API, withCredentials: true });
 
@@ -14,6 +14,5 @@ export function formatApiErrorDetail(detail) {
 }
 
 export function resolveImg(url) {
-  if (url && url.startsWith("/api/")) return `${process.env.REACT_APP_BACKEND_URL || "https://dentistree.onrender.com"}${url}`;
-  return url;
+  if (url && url.startsWith("/api/")) return (process.env.REACT_APP_BACKEND_URL || "https://dentistree.onrender.com") + url;
 }
